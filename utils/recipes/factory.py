@@ -1,11 +1,12 @@
 # from inspect import signature
-from random import randint
+import random
 
+from django.utils.text import slugify
 from faker import Faker
 
 
 def rand_ratio():
-    return randint(840, 900), randint(473, 573)
+    return random.randint(840, 900), random.randint(473, 573)
 
 
 fake = Faker('pt_BR')
@@ -13,9 +14,11 @@ fake = Faker('pt_BR')
 
 
 def make_recipe():
+    mytitle = fake.sentence(nb_words=6)
+
     return {
-        'id': fake.random_number(digits=2, fix_len=True),
-        'title': fake.sentence(nb_words=6),
+        # 'id': None,  # fake.random_number(digits=2, fix_len=True),
+        'title': mytitle,
         'description': fake.sentence(nb_words=12),
         'preparation_time': fake.random_number(digits=2, fix_len=True),
         'preparation_time_unit': 'Minutos',
@@ -28,11 +31,12 @@ def make_recipe():
             'last_name': fake.last_name(),
         },
         'category': {
-            'name': fake.word()
+            'name': random.choice(["Carnes", "Café da manhã", "Vegana"])  # fake.word()
         },
         'cover': {
             'url': 'https://loremflickr.com/%s/%s/food,cook' % rand_ratio(),
-        }
+        },
+        'slug': slugify(mytitle),
     }
 
 

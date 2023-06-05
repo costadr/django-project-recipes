@@ -10,7 +10,7 @@ class RecipeModelTest(RecipeTestBase):
     def setUp(self) -> None:
         self.recipe = self.make_recipe()
         return super().setUp()
-    
+
     def make_recipe_no_defaults(self):
         recipe = Recipe(
             category=self.make_category(name='Test Default Category'),
@@ -51,4 +51,15 @@ class RecipeModelTest(RecipeTestBase):
         self.assertFalse(
             recipe.is_published,
             msg='Recipe is_published is not False',
+        )
+
+    def test_recipe_string_representation(self):
+        needed = 'Testing Representation'
+        self.recipe.title = needed
+        self.recipe.full_clean()
+        self.recipe.save()
+        self.assertEqual(
+            str(self.recipe),
+            needed,
+            msg=f'Recipe string representation must be "{needed}" but received "{str(self.recipe)}" '
         )
