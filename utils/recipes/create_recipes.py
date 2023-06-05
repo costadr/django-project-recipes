@@ -1,6 +1,5 @@
 from recipes.models import Recipe
-
-from .factory import make_recipe
+from utils.recipes.factory import make_recipe
 
 
 def new_recipe():

@@ -1,3 +1,5 @@
+from random import randrange
+
 from django.forms import ValidationError
 from parameterized import parameterized
 
@@ -17,7 +19,7 @@ class RecipeModelTest(RecipeTestBase):
             author=self.make_author(username='newuser'),
             title='Recipe Title',
             description='Recipe Description',
-            slug='recipe-slug',
+            slug=f'recipe-slug-{randrange(1,10000)}',
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
