@@ -2,8 +2,13 @@ from django import forms
 from django.contrib.auth.models import User
 
 
+def add_attr(field, attr_name, attr_new_val):
+    existing = field.widget.attrs.get(attr_name, '')
+    field.widget.attrs[attr_name] = f'{existing} {attr_new_val}'.strip()
+
+
 def add_placeholder(field, placeholder_val):
-    field.widget.attrs['placeholder'] = placeholder_val
+    add_attr(field, 'placeholder', placeholder_val)
 
 
 class RegisterForm(forms.ModelForm):
@@ -13,6 +18,7 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['email'], 'Your e-mail')
         add_placeholder(self.fields['first_name'], 'Ex.: John')
         add_placeholder(self.fields['last_name'], 'Ex.: Doe')
+        add_attr(self.fields['username'], 'css', 'a-css-class')
 
     password = forms.CharField(
         required=True,
@@ -65,3 +71,28 @@ class RegisterForm(forms.ModelForm):
                 'placeholder': 'Type your password here'
             }),
         }
+
+
+    def clean_password(self):
+        data = self.cleaned_data.get('password')
+
+        if 'atenção' in data:
+            raise forms.ValidationError(
+                'Não digite %(pipoca)s no campo password',
+                code='invalid',
+                params={'pipoca': '"atenção"'}
+            )
+
+        return data
+
+    def clean_first_name(self):
+        data = self.cleaned_data.get('first_name')
+
+        if 'John Doe' in data:
+            raise forms.ValidationError(
+                'Não digite %(value)s no campo first name',
+                code='invalid',
+                params={'value': '"John Doe"'}
+            )
+
+        return data
