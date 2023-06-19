@@ -88,7 +88,6 @@ class RegisterForm(forms.ModelForm):
             }),
         }
 
-
     def clean_password(self):
         data = self.cleaned_data.get('password')
 
