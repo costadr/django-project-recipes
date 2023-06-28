@@ -3,10 +3,11 @@ from django.test import TestCase
 from recipes.models import Category, Recipe, User
 
 
-class RecipeTestBase(TestCase):
-    def setUp(self) -> None:
-        return super().setUp()
-
+# In Python, a mixin class is a type of class that is designed to provide
+# specific functionality to other classes through multiple inheritance.
+# Mixin classes are not meant to be instantiated on their own; instead, they
+# are intended to be mixed in with other classes to enhance their functionality.
+class RecipeMixin:
     def make_category(self, name='Category'):
         return Category.objects.create(name=name)
 
@@ -61,3 +62,8 @@ class RecipeTestBase(TestCase):
             preparation_steps_is_html=preparation_steps_is_html,
             is_published=is_published,
         )
+
+
+class RecipeTestBase(TestCase, RecipeMixin):
+    def setUp(self) -> None:
+        return super().setUp()
