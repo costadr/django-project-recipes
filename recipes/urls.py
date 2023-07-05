@@ -11,13 +11,9 @@ urlpatterns = [
         views.RecipeListViewSearch.as_view(),
         name="search"
     ),
-
-    path('about/', views.about),
-    path('contact/', views.contact),
-
     path(
-        'recipes/category/<int:category_id>/', 
-        views.RecipeListViewCategory.as_view(), 
+        'recipes/category/<int:category_id>/',
+        views.RecipeListViewCategory.as_view(),
         name="category"
     ),
     path('recipes/<int:id>/', views.recipe, name="recipe"),
