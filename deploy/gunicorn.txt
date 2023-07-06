@@ -1,0 +1,81 @@
+###############################################################################
+# Replace
+#
+# ___GUNICORN_FILE_NAME___ to the name of the gunicorn file you want
+# __YOUR_USER__ to your user name
+# __PROJECT_FOLDER__ to the folder name of your project
+# __WSGI_FOLDER__ to the folder name where you find a file called wsgi.py
+#
+# catus_academy to the name of the gunicorn file you want
+# diogocosta to your user name
+# django-project-recipes to the folder name of your project
+# project to the folder name where you find a file called wsgi.py
+#
+###############################################################################
+# Criando o arquivo catus_academy.socket
+sudo nano /etc/systemd/system/catus_academy.socket
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=gunicorn blog socket
+
+[Socket]
+ListenStream=/run/catus_academy.socket
+
+[Install]
+WantedBy=sockets.target
+
+###############################################################################
+# Criando o arquivo catus_academy.service
+sudo nano /etc/systemd/system/catus_academy.service
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=Gunicorn daemon (You can change if you want)
+Requires=catus_academy.socket
+After=network.target
+
+[Service]
+User=diogocosta
+Group=www-data
+Restart=on-failure
+EnvironmentFile=/home/diogocosta/django-project-recipes/.env
+WorkingDirectory=/home/diogocosta/django-project-recipes
+# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
+# are all for debugging purposes.
+ExecStart=/home/diogocosta/django-project-recipes/venv/bin/gunicorn \
+          --error-logfile /home/diogocosta/django-project-recipes/gunicorn-error-log \
+          --enable-stdio-inheritance \
+          --log-level "debug" \
+          --capture-output \
+          --access-logfile - \
+          --workers 6 \
+          --bind unix:/run/catus_academy.socket \
+          project.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+###############################################################################
+# Ativando
+sudo systemctl start catus_academy.socket
+sudo systemctl enable catus_academy.socket
+
+# Checando
+sudo systemctl status catus_academy.socket
+curl --unix-socket /run/catus_academy.socket localhost
+sudo systemctl status catus_academy
+
+# Restarting
+sudo systemctl restart catus_academy.service
+sudo systemctl restart catus_academy.socket
+sudo systemctl restart catus_academy
+
+# After changing something
+sudo systemctl daemon-reload
+
+# Debugging
+sudo journalctl -u catus_academy.service
+sudo journalctl -u catus_academy.socket
