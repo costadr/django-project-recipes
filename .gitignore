@@ -152,21 +152,6 @@ env
 .DS_Store
 local_settings.py
 _local_settings.py
-
-# Add again for course purpose
-!db.sqlite3
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-curso-django-projeto1/.gitignore at d84cb1e0cd73a9a76c0689da087bb49c583f1fad · luizomf/curso-django-projeto1 · GitHub
+gunicorn-error-log
+db.sqlite3
+static/
