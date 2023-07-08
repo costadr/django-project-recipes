@@ -13,6 +13,13 @@ from .models import Recipe
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
 
+def theory(request, *args, **kwargs):
+    return render(
+        request,
+        'recipes/pages/theory.html'
+    )
+
+
 class RecipeListViewBase(ListView):
     model = Recipe
     context_object_name = 'recipes'
