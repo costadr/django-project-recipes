@@ -14,10 +14,9 @@ PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.all()
-    recipes = recipes.filter(title__icontains='Teste')
-
-    recipes[0]  # Tente entender porque as consultas do Django são Lazy
+    recipes = Recipe.objects.filter(
+        title__icontains='Alguma coisa'
+    )
 
     context = {
         'recipes': recipes
