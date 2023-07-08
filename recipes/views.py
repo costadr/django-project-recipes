@@ -15,7 +15,14 @@ PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
 def theory(request, *args, **kwargs):
     recipes = Recipe.objects.filter(
-        title__icontains='Alguma coisa'
+        Q(
+            title__icontains='A',
+            id__gt=2,
+            is_published=True,
+        ) |
+        Q(
+            id__gt=1000,
+        )
     )
 
     context = {
