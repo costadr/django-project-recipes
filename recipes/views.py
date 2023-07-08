@@ -16,7 +16,7 @@ PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 def theory(request, *args, **kwargs):
     recipes = Recipe.objects.filter(
         id=F('author__id'),
-    ).order_by('-id')
+    ).order_by('-id')[:1]
 
     context = {
         'recipes': recipes
