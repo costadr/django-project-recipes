@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Custom apps
     'recipes',
     'authors',
+    'tag',
     'debug_toolbar',
 ]
 
