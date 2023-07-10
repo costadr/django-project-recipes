@@ -43,8 +43,8 @@ class RecipeListViewBase(ListView):
         qs = qs.filter(
             is_published=True,
         )
-        qs = qs.select_related('author', 'category')
-        qs = qs.prefetch_related('tags')  # many to many relationship
+        qs = qs.select_related('author', 'category', 'author__profile')  # it is not a foreign key that can be followed by the Django
+        qs = qs.prefetch_related('tags')  # tags == many to many relationship
         return qs
 
     def get_context_data(self, *args, **kwargs):
