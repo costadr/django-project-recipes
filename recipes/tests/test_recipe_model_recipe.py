@@ -1,11 +1,7 @@
-from random import randrange
-
-from django.forms import ValidationError
+from django.core.exceptions import ValidationError
 from parameterized import parameterized
 
-from recipes.models import Recipe
-
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import Recipe, RecipeTestBase
 
 
 class RecipeModelTest(RecipeTestBase):
@@ -17,9 +13,9 @@ class RecipeModelTest(RecipeTestBase):
         recipe = Recipe(
             category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='newuser'),
-            title='Recipe Title',
+            title='Recipe Title 1',
             description='Recipe Description',
-            slug=f'recipe-slug-{randrange(1,10000)}',
+            slug='recipe-slug-for-no-defaults',
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
@@ -39,7 +35,7 @@ class RecipeModelTest(RecipeTestBase):
     def test_recipe_fields_max_length(self, field, max_length):
         setattr(self.recipe, field, 'A' * (max_length + 1))
         with self.assertRaises(ValidationError):
-            self.recipe.full_clean()  # ocorre a validação
+            self.recipe.full_clean()
 
     def test_recipe_preparation_steps_is_html_is_false_by_default(self):
         recipe = self.make_recipe_no_defaults()
@@ -61,7 +57,7 @@ class RecipeModelTest(RecipeTestBase):
         self.recipe.full_clean()
         self.recipe.save()
         self.assertEqual(
-            str(self.recipe),
-            needed,
-            msg=f'Recipe string representation must be "{needed}" but received "{str(self.recipe)}" '
+            str(self.recipe), needed,
+            msg=f'Recipe string representation must be '
+                f'"{needed}" but "{str(self.recipe)}" was received.'
         )
