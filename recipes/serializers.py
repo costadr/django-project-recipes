@@ -28,7 +28,13 @@ class RecipeSerializer(serializers.Serializer):
     )
     tag_objects = TagSerializer(
         many=True,
-        source='tags'
+        source='tags',
+    )
+    tag_links = serializers.HyperlinkedRelatedField(
+        many=True,
+        source='tags',
+        queryset=Tag.objects.all(),
+        view_name='recipes:recipes_api_v2_tag',
     )
 
     def any_method_name(self, recipe):
