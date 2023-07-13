@@ -186,7 +186,7 @@ class RecipeAPIv2Test(test.APITestCase, RecipeAPIv2TestMixin):
         )
 
         # Assertion
-        # Another user cannot update the recipe, so the status code 
+        # Another user cannot update the recipe, so the status code
         # must be 403 (Forbidden)
         self.assertEqual(
             response.status_code,
